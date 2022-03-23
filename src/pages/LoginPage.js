@@ -6,7 +6,7 @@ const initialCredentials = {
   password: '',
 }
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
   const [credentials, setCredentials] = useState(initialCredentials)
 
   const handleChange = event => {
@@ -16,7 +16,7 @@ const LoginPage = () => {
 
   const handleSubmit = event => {
     event.preventDefault()
-    console.log('login with credentials', credentials)
+    onLogin(credentials)
   }
 
   return (
