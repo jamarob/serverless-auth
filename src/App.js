@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import Navbar from './components/Navbar'
@@ -9,9 +9,8 @@ import RequirePermission from './components/RequirePermission'
 const App = () => {
   const [token, setToken] = useState()
 
-  useEffect(() => {
-    console.log({ token })
-  }, [token])
+  const navigate = useNavigate()
+  const goBack = () => navigate(-1)
 
   const loginWithUsernameAndPassword = credentials => {
     fetch('/api/login', {
@@ -23,6 +22,7 @@ const App = () => {
     })
       .then(res => res.json())
       .then(setToken)
+      .then(goBack)
   }
 
   return (
