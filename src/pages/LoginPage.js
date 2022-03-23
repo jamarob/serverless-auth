@@ -6,6 +6,9 @@ const initialCredentials = {
   password: '',
 }
 
+const GITHUB_CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID
+const githubLoginUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`
+
 const LoginPage = ({ onLogin }) => {
   const [credentials, setCredentials] = useState(initialCredentials)
 
@@ -43,6 +46,8 @@ const LoginPage = ({ onLogin }) => {
         </label>
         <button>Login</button>
       </Form>
+      <p>or</p>
+      <a href={githubLoginUrl}>Login with GitHub</a>
     </main>
   )
 }
