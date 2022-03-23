@@ -3,7 +3,7 @@ import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import Navbar from './components/Navbar'
 import WelcomePage from './pages/WelcomePage'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import RequirePermission from './components/RequirePermission'
 
 const App = () => {
@@ -25,9 +25,13 @@ const App = () => {
       .then(goBack)
   }
 
+  const logout = () => {
+    setToken()
+  }
+
   return (
     <>
-      <Navbar />
+      <Navbar isAuthorized={token} onLogout={logout} />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route

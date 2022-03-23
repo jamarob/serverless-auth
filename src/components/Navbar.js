@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-const Navbar = () => {
+const Navbar = ({ isAuthorized, onLogout }) => {
   return (
     <Nav>
       <Link to="/">Welcome</Link>
       <Link to="/profile">Profile</Link>
-      <Link to="/login">Login</Link>
+      {isAuthorized ? (
+        <button onClick={onLogout}>logout</button>
+      ) : (
+        <Link to="/login">Login</Link>
+      )}
     </Nav>
   )
 }
