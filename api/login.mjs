@@ -1,7 +1,7 @@
 import connectToMongodb from '../lib/db/connect-to-mongodb.mjs'
 import User from '../lib/model/User.mjs'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import { createToken } from '../lib/services/jwt-service.mjs'
 
 const handler = async (request, response) => {
   const { method } = request
@@ -30,7 +30,7 @@ const handler = async (request, response) => {
     return response.status(401).json('Unauthorized')
   }
 
-  const token = jwt.sign({ sub: foundUser._id }, 'super-secret')
+  const token = createToken(foundUser._id)
 
   response.status(200).json(token)
 }
