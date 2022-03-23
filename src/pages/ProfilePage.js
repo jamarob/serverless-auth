@@ -13,10 +13,12 @@ const ProfilePage = ({ token }) => {
       .then(setProfile)
   }, [token])
 
+  const name = profile?.name || profile?.githubName
+
   return (
     <main>
       <h1>Profile</h1>
-      <p>Hello {profile?.name} 👋</p>
+      <p>Hello {name} 👋</p>
     </main>
   )
 }
