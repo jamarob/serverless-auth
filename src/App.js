@@ -1,23 +1,19 @@
-import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import LoginPage from './pages/LoginPage'
+import ProfilePage from './pages/ProfilePage'
+import Navbar from './components/Navbar'
+import WelcomePage from './pages/WelcomePage'
 
 const App = () => {
-  const [message, setMessage] = useState()
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then(res => res.json())
-      .then(setMessage)
-  }, [])
-
-  if (!message) {
-    return <p>loading</p>
-  }
-
   return (
-    <Routes>
-      <Route path="/" element={<p>{message}</p>} />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Routes>
+    </>
   )
 }
 
