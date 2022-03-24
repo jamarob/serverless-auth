@@ -19,10 +19,17 @@ const App = () => {
   const goToProfile = useCallback(() => navigate('/profile'), [navigate])
 
   const loginWithUsernameAndPassword = credentials =>
-    postUsernameAndPassword(credentials).then(setToken).then(goBack)
+    postUsernameAndPassword(credentials)
+      .then(setToken)
+      .then(goBack)
+      .catch(console.error)
 
   const loginWithGitHubCode = useCallback(
-    code => postGitHubAuthorizationCode(code).then(setToken).then(goToProfile),
+    code =>
+      postGitHubAuthorizationCode(code)
+        .then(setToken)
+        .then(goToProfile)
+        .catch(console.error),
     [goToProfile]
   )
 

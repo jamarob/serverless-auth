@@ -5,7 +5,7 @@ const ProfilePage = ({ token }) => {
   const [profile, setProfile] = useState()
 
   useEffect(() => {
-    getProfile(token).then(setProfile)
+    getProfile(token).then(setProfile).catch(console.error)
   }, [token])
 
   const name = profile?.name || profile?.githubName
