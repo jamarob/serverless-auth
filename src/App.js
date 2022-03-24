@@ -1,41 +1,15 @@
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import Navbar from './components/Navbar'
 import WelcomePage from './pages/WelcomePage'
-import { useCallback, useState } from 'react'
 import RequirePermission from './components/RequirePermission'
 import GitHubRedirectPage from './pages/GitHubRedirectPage'
-import {
-  postGitHubAuthorizationCode,
-  postUsernameAndPassword,
-} from './services/api-service'
+import useAuth from './hooks/useAuth'
 
 const App = () => {
-  const [token, setToken] = useState()
-
-  const navigate = useNavigate()
-  const goBack = () => navigate(-1)
-  const goToProfile = useCallback(() => navigate('/profile'), [navigate])
-
-  const loginWithUsernameAndPassword = credentials =>
-    postUsernameAndPassword(credentials)
-      .then(setToken)
-      .then(goBack)
-      .catch(console.error)
-
-  const loginWithGitHubCode = useCallback(
-    code =>
-      postGitHubAuthorizationCode(code)
-        .then(setToken)
-        .then(goToProfile)
-        .catch(console.error),
-    [goToProfile]
-  )
-
-  const logout = () => {
-    setToken()
-  }
+  const { token, logout, loginWithUsernameAndPassword, loginWithGitHubCode } =
+    useAuth()
 
   return (
     <>
