@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react'
+import { getProfile } from '../services/api-service'
 
 const ProfilePage = ({ token }) => {
   const [profile, setProfile] = useState()
 
   useEffect(() => {
-    fetch('/api/profile', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(setProfile)
+    getProfile(token).then(setProfile)
   }, [token])
 
   const name = profile?.name || profile?.githubName
