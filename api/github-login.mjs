@@ -1,19 +1,10 @@
-import fetch from 'node-fetch'
 import User from '../lib/model/User.mjs'
 import connectToMongodb from '../lib/db/connect-to-mongodb.mjs'
 import { createToken } from '../lib/services/jwt-service.mjs'
-
-const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID
-
-if (!CLIENT_ID) {
-  throw new Error('CLIENT_ID not set')
-}
-
-const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
-
-if (!CLIENT_SECRET) {
-  throw new Error('CLIENT_SECRET not set')
-}
+import {
+  exchangeCodeForAccessToken,
+  getLoggedInGitHubUser,
+} from '../lib/services/github-api-service.mjs'
 
 const handler = async (request, response) => {
   const { method } = request
@@ -28,39 +19,13 @@ const handler = async (request, response) => {
     return response.status(400).json('Bad request')
   }
 
-  const accessTokenResponse = await fetch(
-    'https://github.com/login/oauth/access_token',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code,
-      }),
-    }
-  )
-
-  const accessTokenData = await accessTokenResponse.json()
-
-  const githubAccessToken = accessTokenData.access_token
+  const githubAccessToken = await exchangeCodeForAccessToken(code)
 
   if (!githubAccessToken) {
     return response.status(401).json('Unauthorized')
   }
 
-  const profileResponse = await fetch('https://api.github.com/user', {
-    headers: {
-      Authorization: `Bearer ${githubAccessToken}`,
-    },
-  })
-
-  const profile = await profileResponse.json()
-
-  const githubName = profile.login
+  const githubName = await getLoggedInGitHubUser(githubAccessToken)
 
   await connectToMongodb()
 
