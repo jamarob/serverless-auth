@@ -1,19 +1,12 @@
-import { useEffect, useState } from 'react'
-import { getProfile } from '../services/api-service'
+import useProfile from '../hooks/useProfile'
 
 const ProfilePage = ({ token }) => {
-  const [profile, setProfile] = useState()
-
-  useEffect(() => {
-    getProfile(token).then(setProfile).catch(console.error)
-  }, [token])
-
-  const name = profile?.name || profile?.githubName
+  const { displayName } = useProfile(token)
 
   return (
     <main>
       <h1>Profile</h1>
-      <p>Hello {name} 👋</p>
+      <p>Hello {displayName} 👋</p>
     </main>
   )
 }
